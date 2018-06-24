@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ycu.dao.ShareDao">
+<cache/>
+	<insert id="saveShare" parameterType="cn.edu.ycu.entity.Share">
+		INSERT INTO ycu_share
+		(ycu_share_id, ycu_user_id, ycu_note_id, ycu_share_up, 
+		ycu_share_down, ycu_share_title, ycu_share_body)
+		VALUES
+		(#{ycu_share_id}, #{ycu_user_id}, #{ycu_note_id}, #{ycu_share_up},
+		#{ycu_share_down}, #{ycu_share_title}, #{ycu_share_body})
+	</insert>
+	<select id="findShares" parameterType="cn.edu.ycu.entity.ShareBean" resultType="cn.edu.ycu.entity.Share">
+		SELECT ycu_share_id, ycu_user_id, ycu_note_id, ycu_share_up, 
+		ycu_share_down, ycu_share_title, ycu_share_body
+		FROM ycu_share
+		<where>
+			<if test="shareTitle != null">
+				AND ycu_share_title LIKE #{shareTitle}
+			</if>
+		</where>
+		LIMIT #{begin}, #{count}
+	</select>
+	<select id="findShare" parameterType="cn.edu.ycu.entity.ShareBean" resultType="cn.edu.ycu.entity.Share">
+		SELECT ycu_share_id, ycu_user_id, ycu_note_id, ycu_share_up, 
+		ycu_share_down, ycu_share_title, ycu_share_body
+		FROM ycu_share
+		<where>
+			<if test="shareId != null">
+				AND ycu_share_id = #{shareId}
+			</if>
+		</where>
+	</select>
+	<delete id="delShare" parameterType="cn.edu.ycu.entity.ShareBean">
+		DELETE FROM ycu_share
+		<where>
+			<if test="shareId != null">
+				AND ycu_share_id = #{shareId}
+			</if>
+		</where>
+	</delete>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ycu.dao.NoteBookDao">
+<cache/>
+	<select id="findBookList" parameterType="cn.edu.ycu.entity.NoteBookBean" resultType="cn.edu.ycu.entity.NoteBook">
+		SELECT ycu_notebook_id, ycu_user_id, ycu_notebook_type_id, 
+		ycu_notebook_name, ycu_notebook_desc, ycu_notebook_createtime
+		FROM ycu_notebook
+		<where>
+			<if test="userId != null">
+				AND ycu_user_id = #{userId}
+			</if>
+		</where>
+		ORDER BY ycu_notebook_createtime DESC
+	</select>
+	<select id="findBook" parameterType="cn.edu.ycu.entity.NoteBookBean" resultType="cn.edu.ycu.entity.NoteBook">
+		SELECT ycu_notebook_id, ycu_user_id, ycu_notebook_type_id, 
+		ycu_notebook_name, ycu_notebook_desc
+		FROM ycu_notebook
+		<where>
+			<if test="bookId != null">
+				AND ycu_notebook_id = #{bookId}
+			</if>
+			<if test="userId != null">
+				AND ycu_user_id = #{userId}
+			</if>
+			<if test="typeId != null">
+				AND ycu_notebook_type_id = #{typeId}
+			</if>
+			<if test="bookName != null">
+				AND ycu_notebook_name = #{bookName}
+			</if>
+		</where>
+	</select>
+	<update id="updateById" parameterType="cn.edu.ycu.entity.NoteBook">
+		UPDATE ycu_notebook 
+		<set>
+			<if test="ycu_notebook_name != null">
+				ycu_notebook_name = #{ycu_notebook_name}
+			</if>
+		</set>
+		<where>
+			<if test="ycu_notebook_id != null">
+				AND ycu_notebook_id = #{ycu_notebook_id}
+			</if>
+		</where>
+	</update>
+	<insert id="saveBook" parameterType="cn.edu.ycu.entity.NoteBook">
+		INSERT INTO ycu_notebook
+		(ycu_notebook_id, ycu_user_id, ycu_notebook_type_id, 
+		ycu_notebook_name, ycu_notebook_desc, ycu_notebook_createtime) 
+		VALUES 
+		(#{ycu_notebook_id}, #{ycu_user_id}, #{ycu_notebook_type_id}, 
+		#{ycu_notebook_name}, #{ycu_notebook_desc}, #{ycu_notebook_createtime})
+	</insert>
+	<delete id="deleteBook" parameterType="cn.edu.ycu.entity.NoteBookBean">
+		DELETE FROM ycu_notebook
+		<where>
+			<if test="bookId != null">
+				AND ycu_notebook_id = #{bookId}
+			</if>
+			<if test="userId != null">
+				AND ycu_user_id = #{userId}
+			</if>
+		</where>
+	</delete>
+</mapper>

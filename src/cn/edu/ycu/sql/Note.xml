@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ycu.dao.NoteDao">
+<cache/>
+	<select id="findNoteList" parameterType="cn.edu.ycu.entity.NoteBean" resultType="cn.edu.ycu.entity.Note">
+		SELECT ycu_note_id, ycu_notebook_id, ycu_user_id, ycu_note_status_id, ycu_note_type_id, 
+		ycu_note_title, ycu_note_body, ycu_note_create_time, ycu_note_last_modify_time 
+		FROM ycu_note
+		<where>
+			<if test="bookId != null">
+				AND ycu_notebook_id = #{bookId}
+			</if>
+			<if test="userId != null">
+				AND ycu_user_id = #{userId}
+			</if>
+			<if test="typeId != null">
+				AND ycu_note_type_id = #{typeId}
+			</if>
+		</where>
+		ORDER BY ycu_note_create_time DESC
+	</select>
+	<select id="findNote" parameterType="cn.edu.ycu.entity.NoteBean" resultType="cn.edu.ycu.entity.Note">
+		SELECT ycu_note_id, ycu_notebook_id, ycu_user_id, ycu_note_status_id, ycu_note_type_id, 
+		ycu_note_title, ycu_note_body, ycu_note_create_time, ycu_note_last_modify_time 
+		FROM ycu_note
+		<where>
+			<if test="noteId != null">
+				AND ycu_note_id = #{noteId}
+			</if>
+			<if test="bookId != null">
+				AND ycu_notebook_id = #{bookId}
+			</if>
+			<if test="userId != null">
+				AND ycu_user_id = #{userId}
+			</if>
+			<if test="noteTitle != null">
+				AND ycu_note_title = #{noteTitle}
+			</if>
+			<if test="typeId != null">
+				AND ycu_note_type_id = #{typeId}
+			</if>
+		</where>
+	</select>
+	<select id="findLike" parameterType="cn.edu.ycu.entity.SearchBean" resultType="cn.edu.ycu.entity.Note">
+		SELECT ycu_note_id, ycu_note_title 
+		FROM ycu_note
+		<where>
+			<if test="userId != null">
+				AND ycu_user_id = #{userId}
+			</if>
+			<if test="noteType != null">
+				AND ycu_note_type_id = #{noteType}
+			</if>
+			<if test="noteTitle != null">
+				AND ycu_note_title LIKE #{noteTitle}
+			</if>
+		</where>
+		LIMIT #{begin}, #{count}
+	</select>
+	<update id="updateNote" parameterType="cn.edu.ycu.entity.Note">
+		UPDATE ycu_note 
+		<set>
+			<if test="ycu_note_title != null">
+				ycu_note_title = #{ycu_note_title},
+			</if>
+			<if test="ycu_note_body != null">
+				ycu_note_body = #{ycu_note_body},
+			</if>
+			<if test="ycu_note_last_modify_time != null">
+				ycu_note_last_modify_time = #{ycu_note_last_modify_time},
+			</if>
+			<if test="ycu_notebook_id != null">
+				ycu_notebook_id = #{ycu_notebook_id},
+			</if>
+			<if test="ycu_note_type_id != null">
+				ycu_note_type_id = #{ycu_note_type_id},
+			</if>
+			<if test="ycu_note_status_id != null">
+				ycu_note_status_id = #{ycu_note_status_id}
+			</if>
+		</set>
+		<where>
+			<if test="ycu_note_id != null">
+				AND ycu_note_id = #{ycu_note_id}
+			</if>
+		</where>
+	</update>
+	<insert id="saveNote" parameterType="cn.edu.ycu.entity.Note">
+		INSERT INTO ycu_note
+		(ycu_note_id, ycu_notebook_id, ycu_user_id, ycu_note_status_id, ycu_note_type_id, 
+		ycu_note_title, ycu_note_body, ycu_note_create_time, ycu_note_last_modify_time) 
+		VALUES 
+		(#{ycu_note_id}, #{ycu_notebook_id}, #{ycu_user_id}, 
+		#{ycu_note_status_id}, #{ycu_note_type_id}, #{ycu_note_title}, 
+		#{ycu_note_body}, #{ycu_note_create_time}, #{ycu_note_last_modify_time})
+	</insert>
+	<delete id="deleteNotes" parameterType="cn.edu.ycu.entity.NoteBean">
+		DELETE FROM ycu_note 
+		<where>
+			<if test="noteId != null">
+				AND ycu_note_id = #{noteId}
+			</if>
+			<if test="bookId != null">
+				AND ycu_notebook_id = #{bookId}
+			</if>
+		</where>
+	</delete>
+</mapper>

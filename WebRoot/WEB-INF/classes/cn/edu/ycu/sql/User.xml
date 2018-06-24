@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ycu.dao.UserDao">
+<cache/>
+	<select id="findUser" parameterType="cn.edu.ycu.entity.UserBean" resultType="cn.edu.ycu.entity.User">
+		SELECT ycu_user_id, ycu_user_name, ycu_user_password, ycu_user_token, ycu_user_desc 
+		FROM ycu_user
+		<where>
+			<if test="userId != null">
+				AND ycu_user_id = #{userId}
+			</if>
+			<if test="userName != null">
+				AND ycu_user_name = #{userName}
+			</if>
+		</where>
+	</select>
+	<update id="updateUser" parameterType="cn.edu.ycu.entity.User">
+		UPDATE ycu_user 
+		<set>
+			<if test="ycu_user_password != null">
+				ycu_user_password = #{ycu_user_password},
+			</if>
+		</set>
+		<where>
+			<if test="ycu_user_id != null">
+				AND ycu_user_id = #{ycu_user_id}
+			</if>
+			<if test="ycu_user_name != null">
+				AND ycu_user_name = #{ycu_user_name}
+			</if>
+		</where>
+	</update>
+	<insert id="saveUser" parameterType="cn.edu.ycu.entity.User">
+		INSERT INTO ycu_user
+		(ycu_user_id, ycu_user_name, ycu_user_password, ycu_user_token, ycu_user_desc )
+		VALUES 
+		(#{ycu_user_id}, #{ycu_user_name}, #{ycu_user_password}, #{ycu_user_token}, #{ycu_user_desc})
+	</insert>
+</mapper>

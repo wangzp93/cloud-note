@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.edu.ycu.dao.CollectDao">
+<cache/>
+	<insert id="saveCollect" parameterType="cn.edu.ycu.entity.Collect">
+		INSERT INTO ycu_collect
+		(ycu_collect_id, ycu_collect_title, ycu_collect_body, ycu_user_id)
+		VALUES
+		(#{ycu_collect_id}, #{ycu_collect_title}, #{ycu_collect_body}, #{ycu_user_id})
+	</insert>
+	<select id="findCollects" parameterType="cn.edu.ycu.entity.CollectBean" resultType="cn.edu.ycu.entity.Collect">
+		SELECT ycu_collect_id, ycu_collect_title, ycu_collect_body, ycu_user_id 
+		FROM ycu_collect
+		<where>
+			<if test="userId != null">
+				AND ycu_user_id = #{userId}
+			</if>
+		</where>
+	</select>
+	<select id="findCollect" parameterType="cn.edu.ycu.entity.CollectBean" resultType="cn.edu.ycu.entity.Collect">
+		SELECT ycu_collect_id, ycu_collect_title, ycu_collect_body, ycu_user_id 
+		FROM ycu_collect
+		<where>
+			<if test="collectId != null">
+				AND ycu_collect_id = #{collectId}
+			</if>
+		</where>
+	</select>
+	<delete id="delCollect" parameterType="cn.edu.ycu.entity.CollectBean">
+		DELETE FROM ycu_collect
+		<where>
+			<if test="collectId != null">
+				ycu_collect_id = #{collectId}
+			</if>
+		</where>
+	</delete>
+</mapper>
